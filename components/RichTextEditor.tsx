@@ -3,8 +3,10 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
 import Link from '@tiptap/extension-link'
+import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 type Props = {
   value: string
@@ -20,11 +22,13 @@ const btn: React.CSSProperties = {
 const btnActive: React.CSSProperties = { ...btn, background: '#dce8f4', borderColor: '#1a5a8a', color: '#1a5a8a' }
 
 export function RichTextEditor({ value, onChange, placeholder }: Props) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const editor = useEditor({
     extensions: [
       StarterKit,
       Underline,
       Link.configure({ openOnClick: false }),
+      Image.configure({ inline: false, allowBase64: false }),
       Placeholder.configure({ placeholder: placeholder || 'Artikeltext hier eingeben…' }),
     ],
     content: value,
@@ -61,6 +65,35 @@ export function RichTextEditor({ value, onChange, placeholder }: Props) {
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }
 
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file || !editor) return
+
+    // Sofort-Vorschau mit Base64 (wird nach Upload ersetzt)
+    const reader = new FileReader()
+    reader.onload = async () => {
+      const supabase = createClient()
+      const ext = file.name.split('.').pop()
+      const path = `editor/${Date.now()}.${ext}`
+
+      const { data, error } = await supabase.storage
+        .from('images')
+        .upload(path, file, { contentType: file.type, upsert: false })
+
+      if (error) {
+        alert('Upload fehlgeschlagen: ' + error.message)
+        return
+      }
+
+      const { data: urlData } = supabase.storage.from('images').getPublicUrl(data.path)
+      editor.chain().focus().setImage({ src: urlData.publicUrl }).run()
+    }
+    reader.readAsDataURL(file)
+
+    // Reset input so same file can be selected again
+    e.target.value = ''
+  }
+
   return (
     <div style={{ border: '1px solid #ccd5de', borderRadius: 8, overflow: 'hidden', background: '#fff' }}>
       {/* Toolbar */}
@@ -77,6 +110,15 @@ export function RichTextEditor({ value, onChange, placeholder }: Props) {
         <div style={{ width: 1, background: '#ccd5de', margin: '0 4px' }} />
         <button type="button" onClick={() => editor.chain().focus().toggleBlockquote().run()} style={isActive('blockquote') ? btnActive : btn}>❝ Zitat</button>
         <button type="button" onClick={setLink} style={isActive('link') ? btnActive : btn}>🔗 Link</button>
+        <div style={{ width: 1, background: '#ccd5de', margin: '0 4px' }} />
+        <button type="button" onClick={() => fileInputRef.current?.click()} style={btn} title="Bild hochladen">🖼 Bild</button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          style={{ display: 'none' }}
+        />
         <div style={{ width: 1, background: '#ccd5de', margin: '0 4px' }} />
         <button type="button" onClick={() => editor.chain().focus().undo().run()} style={btn} disabled={!editor.can().undo()}>↩</button>
         <button type="button" onClick={() => editor.chain().focus().redo().run()} style={btn} disabled={!editor.can().redo()}>↪</button>

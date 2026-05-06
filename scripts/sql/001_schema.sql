@@ -91,8 +91,31 @@ DROP POLICY IF EXISTS newsletter_admin ON public.newsletter_subscribers;
 CREATE POLICY newsletter_insert ON public.newsletter_subscribers FOR INSERT WITH CHECK (true);
 CREATE POLICY newsletter_admin ON public.newsletter_subscribers FOR SELECT USING (auth.uid() IS NOT NULL);
 
--- Kontakt: jeder schreiben, nur eingeloggt lesen
+-- Kontakt: jeder schreiben, nur eingeloggt lesen + löschen
 DROP POLICY IF EXISTS kontakt_insert ON public.kontakt_nachrichten;
 DROP POLICY IF EXISTS kontakt_admin ON public.kontakt_nachrichten;
+DROP POLICY IF EXISTS kontakt_delete ON public.kontakt_nachrichten;
 CREATE POLICY kontakt_insert ON public.kontakt_nachrichten FOR INSERT WITH CHECK (true);
 CREATE POLICY kontakt_admin ON public.kontakt_nachrichten FOR SELECT USING (auth.uid() IS NOT NULL);
+CREATE POLICY kontakt_update ON public.kontakt_nachrichten FOR UPDATE USING (auth.uid() IS NOT NULL);
+CREATE POLICY kontakt_delete ON public.kontakt_nachrichten FOR DELETE USING (auth.uid() IS NOT NULL);
+
+-- Newsletter: eingeloggt auch löschen
+DROP POLICY IF EXISTS newsletter_delete ON public.newsletter_subscribers;
+CREATE POLICY newsletter_delete ON public.newsletter_subscribers FOR DELETE USING (auth.uid() IS NOT NULL);
+
+-- ============================================================
+-- STORAGE – Bilder-Bucket
+-- ============================================================
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES ('images', 'images', true, 5242880, ARRAY['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'])
+ON CONFLICT (id) DO NOTHING;
+
+-- Storage Policies
+DROP POLICY IF EXISTS images_public_read ON storage.objects;
+DROP POLICY IF EXISTS images_admin_upload ON storage.objects;
+DROP POLICY IF EXISTS images_admin_delete ON storage.objects;
+
+CREATE POLICY images_public_read ON storage.objects FOR SELECT USING (bucket_id = 'images');
+CREATE POLICY images_admin_upload ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'images' AND auth.uid() IS NOT NULL);
+CREATE POLICY images_admin_delete ON storage.objects FOR DELETE USING (bucket_id = 'images' AND auth.uid() IS NOT NULL);

@@ -1,0 +1,103 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+::selection { background: rgba(74,127,165,0.2); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(74,127,165,0.3); border-radius: 2px; }
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero-inner {
+    padding: 0 20px 40px !important;
+  }
+  .hero-content {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+  }
+  .hero-right {
+    display: none !important;
+  }
+  .post-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .featured-card {
+    grid-template-columns: 1fr !important;
+  }
+  .featured-image {
+    padding-bottom: 56.25% !important;
+  }
+  .article-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .article-sidebar {
+    display: none !important;
+  }
+  .page-padding {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .footer-inner {
+    flex-direction: column !important;
+    gap: 16px !important;
+    text-align: center !important;
+  }
+  .nav-inner {
+    padding: 0 16px !important;
+  }
+  .kategorien-heading {
+    font-size: 28px !important;
+  }
+  .article-title {
+    font-size: 28px !important;
+  }
+  .featured-content {
+    padding: 28px 24px !important;
+  }
+}
+
+/* ── ARTICLE HTML CONTENT ───────────────────────── */
+.article-html-content p { margin-bottom: 24px; }
+.article-html-content h2 {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 26px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  margin-top: 40px;
+  letter-spacing: -0.01em;
+}
+.article-html-content h3 {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  margin-top: 28px;
+}
+.article-html-content blockquote {
+  border-left: 3px solid currentColor;
+  padding-left: 24px;
+  margin: 8px 0 24px;
+  font-family: 'Cormorant Garant', serif;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+.article-html-content ul, .article-html-content ol {
+  padding-left: 24px;
+  margin-bottom: 24px;
+}
+.article-html-content li { margin-bottom: 8px; line-height: 1.7; }
+.article-html-content strong { font-weight: 600; }
+.article-html-content a { text-decoration: underline; opacity: 0.8; }
+.article-html-content img {
+  width: 100%;
+  border-radius: 8px;
+  margin: 16px 0 24px;
+}

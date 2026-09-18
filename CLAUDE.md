@@ -18,7 +18,7 @@ Vercel-Deploy via `vercel deploy --prod` (kein git push → Vercel, da große Bi
 | Styling | Inline-Styles + globals.css (kein Tailwind) |
 | Fonts | DM Sans (Headlines + Fließtext), Cormorant Garant (nur noch H1-Titel) |
 | Deploy | Vercel (`vercel deploy --prod`) |
-| Repo | github.com/nullacht3/cms-template (**öffentlich** — ggf. auf privat umstellen) |
+| Repo | github.com/nullacht3/cms-template (privat) |
 
 ---
 

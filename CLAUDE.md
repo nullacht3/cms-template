@@ -18,7 +18,7 @@ Vercel-Deploy via `vercel deploy --prod` (kein git push → Vercel, da große Bi
 | Styling | Inline-Styles + globals.css (kein Tailwind) |
 | Fonts | DM Sans (Headlines + Fließtext), Cormorant Garant (nur noch H1-Titel) |
 | Deploy | Vercel (`vercel deploy --prod`) |
-| Repo | github.com/nullacht3/cms-template (privat) |
+| Repo | github.com/nullacht3/cms-template (**öffentlich** — ggf. auf privat umstellen) |
 
 ---
 
@@ -77,10 +77,10 @@ RLS ist auf allen Tabellen aktiviert.
 | `site_settings` | ✓ | SELECT: alle (public) · ALL: authenticated |
 | `newsletter_subscribers` | ✓ | INSERT: alle · SELECT + DELETE: authenticated |
 | `kontakt_nachrichten` | ✓ | INSERT: alle · SELECT + UPDATE + DELETE: authenticated |
-| `media` | ⚠️ | Tabelle existiert, aber **keine RLS-Policies in den SQL-Migrations** — prüfen! |
+| `media` | ✓ | SELECT: public · ALL: authenticated (empirisch geprüft; Policies in `004_media_rls.sql` dokumentiert) |
 | `storage.objects` (images) | ✓ | SELECT: public · INSERT + DELETE: authenticated |
 
-> **Offener Punkt**: Die `media`-Tabelle hat keine definierten RLS-Policies in `scripts/sql/`. Entweder fehlt die Policy noch oder sie wurde manuell im Supabase-Dashboard gesetzt.
+> Die `media`-Tabelle-Policies wurden manuell im Supabase-Dashboard gesetzt und sind in `scripts/sql/004_media_rls.sql` dokumentiert. Migration muss bei DB-Neuerstellung manuell im SQL-Editor ausgeführt werden (kein REST-Zugang für Raw SQL).
 
 ---
 
@@ -113,7 +113,7 @@ GitHub-Repo dient als reines Code-Backup.
 
 ## Offene To-dos
 
-- [ ] **RLS für `media`-Tabelle** prüfen und ggf. Policies anlegen
+- [x] **RLS für `media`-Tabelle** — aktiv und korrekt (SELECT public, schreiben nur auth)
 - [ ] **Titelbild für Polynukleotide-Artikel** — User liefert es nach, dann im Admin hochladen
 - [ ] **Artikel-URL-Routing testen**: Sicherstellen dass `/[slug]` nicht mit anderen Top-Level-Routen kollidiert (z.B. `/kategorien`, `/impressum`)
 - [ ] **Vercel Environment Variables** kontrollieren: alle drei `.env.local`-Werte müssen dort hinterlegt sein

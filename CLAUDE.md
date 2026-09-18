@@ -18,7 +18,7 @@ Deploy: **Push auf `main` → automatisch live** (Vercel GitHub Integration akti
 | Styling | Inline-Styles + globals.css (kein Tailwind) |
 | Fonts | DM Sans (Headlines + Fließtext), Cormorant Garant (nur noch H1-Titel) |
 | Deploy | Vercel (GitHub Integration: push auf `main` → automatisch live) |
-| Repo | github.com/nullacht3/cms-template (privat) |
+| Repo | github.com/nullacht3/cms-template (öffentlich) |
 
 ---
 
@@ -105,6 +105,56 @@ Auf Vercel müssen alle drei als Environment Variables hinterlegt sein.
 git push origin main   # → automatischer Vercel-Deploy auf deraesthet.de
 git push origin feat/x # → Preview-URL (kein Live-Deploy)
 ```
+
+---
+
+## Neuen Rechner einrichten
+
+### 1. Software installieren
+- [Claude Code](https://claude.ai/download) (Desktop App)
+- [Node.js LTS](https://nodejs.org)
+- Git (Mac: `xcode-select --install` im Terminal)
+
+### 2. Repo klonen & Dependencies installieren
+```bash
+git clone https://github.com/nullacht3/cms-template
+cd cms-template/next-app
+npm install
+```
+
+### 3. `.env.local` anlegen
+
+Öffne: https://supabase.com/dashboard/project/ettzhstthiikcnjeoznt/settings/api
+
+Erstelle die Datei `next-app/.env.local` mit diesen Werten:
+```
+NEXT_PUBLIC_SUPABASE_URL=        # → "Project URL"
+NEXT_PUBLIC_SUPABASE_ANON_KEY=   # → "anon public"
+SUPABASE_SERVICE_ROLE_KEY=       # → "service_role secret"
+```
+
+### 4. Claude Code öffnen
+
+1. Claude Code App starten
+2. Oben links den Ordner `cms-template/next-app` öffnen
+3. Im eingebauten Terminal: `npm run dev` → läuft auf http://localhost:3000
+
+### 5. Mit Claude arbeiten — empfohlene Prompts
+
+**Artikel schreiben & hochladen:**
+> „Schreib einen SEO-Artikel über [Thema] für Der Ästhet und lade ihn in Supabase hoch. Slug: [slug], Kategorie: [Behandlungen/Trends/Wissen & Forschung/Ärzte & Kliniken]"
+
+**Design ändern:**
+> „Ändere [Komponente/Seite]: [was soll anders sein]"
+
+**Fehler beheben:**
+> „[Fehlermeldung einfügen] — was ist das Problem und wie beheben wir es?"
+
+**Neues Feature:**
+> „Bau [Feature] ein. Hier ist was ich mir vorstelle: [Beschreibung]"
+
+**Deploy:**
+> „Pushe alle Änderungen auf main" — deployt automatisch auf deraesthet.de
 
 ---
 

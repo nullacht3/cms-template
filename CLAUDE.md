@@ -3,7 +3,7 @@
 # Der Ästhet — Projektstand
 
 Deutsches Magazin für ästhetische Medizin. Domain: **deraesthet.de**  
-Vercel-Deploy via `vercel deploy --prod` (kein git push → Vercel, da große Binärdateien in der History waren).
+Deploy: **Push auf `main` → automatisch live** (Vercel GitHub Integration aktiv). Preview-URLs für andere Branches. Manuell: `vercel deploy --prod`.
 
 ---
 
@@ -17,7 +17,7 @@ Vercel-Deploy via `vercel deploy --prod` (kein git push → Vercel, da große Bi
 | Storage | Supabase Storage (Bucket: `images`) |
 | Styling | Inline-Styles + globals.css (kein Tailwind) |
 | Fonts | DM Sans (Headlines + Fließtext), Cormorant Garant (nur noch H1-Titel) |
-| Deploy | Vercel (`vercel deploy --prod`) |
+| Deploy | Vercel (GitHub Integration: push auf `main` → automatisch live) |
 | Repo | github.com/nullacht3/cms-template (privat) |
 
 ---
@@ -102,12 +102,9 @@ Auf Vercel müssen alle drei als Environment Variables hinterlegt sein.
 ## Deploy
 
 ```bash
-cd next-app
-vercel deploy --prod
+git push origin main   # → automatischer Vercel-Deploy auf deraesthet.de
+git push origin feat/x # → Preview-URL (kein Live-Deploy)
 ```
-
-Kein `git push → Vercel`-Integration, weil Binärdateien in der Git-History stören.  
-GitHub-Repo dient als reines Code-Backup.
 
 ---
 

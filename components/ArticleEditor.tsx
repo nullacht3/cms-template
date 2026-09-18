@@ -90,7 +90,7 @@ export function ArticleEditor({ id, initial }: Props) {
   // SEO preview values
   const seoTitle = form.seo_title || form.title || 'Seitentitel'
   const seoDesc = form.meta_description || form.excerpt || 'Beschreibung erscheint hier…'
-  const seoUrl = `deraesthet.de/artikel/${form.slug || 'artikel-slug'}`
+  const seoUrl = `deraesthet.de/${form.slug || 'artikel-slug'}`
   const titleLen = seoTitle.length
   const descLen = seoDesc.length
 
@@ -131,7 +131,7 @@ export function ArticleEditor({ id, initial }: Props) {
             <div>
               <label style={label}>Slug (URL) *</label>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 13, color: '#8aa0b8', whiteSpace: 'nowrap' }}>deraesthet.de/artikel/</span>
+                <span style={{ fontSize: 13, color: '#8aa0b8', whiteSpace: 'nowrap' }}>deraesthet.de/</span>
                 <input value={form.slug} onChange={e => set('slug', e.target.value)} placeholder="artikel-slug" style={{ ...input }} />
               </div>
             </div>

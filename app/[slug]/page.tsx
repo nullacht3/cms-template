@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${title} | Der Ästhet`,
       description,
-      url: `https://deraesthet.de/artikel/${slug}`,
+      url: `https://deraesthet.de/${slug}`,
       siteName: 'Der Ästhet',
       images: [{ url: image, width: 1200, height: 630 }],
       type: 'article',

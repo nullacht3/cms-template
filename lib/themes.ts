@@ -2,15 +2,15 @@ import type { Theme } from './types'
 
 export const THEMES: Record<string, Theme> = {
   beige: {
-    bg: '#f2f5f8', surface: '#ffffff', surfaceHover: '#e8edf2',
-    border: '#ccd5de', borderLight: '#d8e0e8',
-    text: '#0f1e2e', textMuted: '#4a6278', textLight: '#8aa0b8',
-    accent: '#1a5a8a', accentLight: 'rgba(26,90,138,0.07)',
-    navBg: 'rgba(242,245,248,0.93)',
-    shadow: '0 2px 20px rgba(15,30,46,0.07)', shadowHover: '0 6px 32px rgba(15,30,46,0.12)',
-    tag: { bg: '#dce8f4', color: '#1a5a8a' },
-    pill: { bg: '#dce8f4', color: '#1a5a8a', activeBg: '#1a5a8a', activeColor: '#fff' },
-    separator: '#ccd5de', bodyClass: 'v-beige',
+    bg: '#faf8f5', surface: '#ffffff', surfaceHover: '#f4f0ea',
+    border: '#e8e2da', borderLight: '#f0ece6',
+    text: '#1a1410', textMuted: '#5a4e46', textLight: '#a8998e',
+    accent: '#1a1410', accentLight: 'rgba(26,20,16,0.05)',
+    navBg: 'rgba(250,248,245,0.97)',
+    shadow: '0 2px 16px rgba(26,20,16,0.07)', shadowHover: '0 8px 32px rgba(26,20,16,0.13)',
+    tag: { bg: '#edeae4', color: '#5a4e46' },
+    pill: { bg: '#edeae4', color: '#5a4e46', activeBg: '#1a1410', activeColor: '#fff' },
+    separator: '#e8e2da', bodyClass: 'v-beige',
   },
   blau: {
     bg: '#f0f4f8', surface: '#ffffff', surfaceHover: '#e6edf4',
@@ -47,7 +47,25 @@ export const THEMES: Record<string, Theme> = {
   },
 }
 
-export const CATEGORIES = ['Alle', 'Wissen & Forschung', 'Behandlungen', 'Trends', 'Ärzte & Kliniken']
+export const CATEGORIES = ['Alle', 'Behandlungen', 'Trends', 'Wissen & Forschung', 'Ärzte & Kliniken']
+
+// Display names for the 4 nav categories
+export const CATEGORY_DISPLAY: Record<string, string> = {
+  'Behandlungen': 'Treatments',
+  'Trends': 'Beauty Trends',
+  'Wissen & Forschung': 'Wissen & Forschung',
+  'Ärzte & Kliniken': 'Sprechstunde',
+}
+
+// URL slug → DB category name
+export const CATEGORY_SLUG_MAP: Record<string, string> = {
+  'treatments': 'Behandlungen',
+  'trends': 'Trends',
+  'wissen': 'Wissen & Forschung',
+  'sprechstunde': 'Ärzte & Kliniken',
+}
+
+export const CATEGORY_ORDER = ['Behandlungen', 'Trends', 'Wissen & Forschung', 'Ärzte & Kliniken']
 
 export const POSTS = [
   { id: 1, category: 'Behandlungen', tag: 'Fachwissen', title: 'Fadenlifting: Wie funktioniert das minimalinvasive Lifting wirklich?', excerpt: 'Was genau passiert unter der Haut bei einem Fadenlifting — biologisch, mechanisch, langfristig? Ein Facharzt erklärt den Eingriff ohne Beschönigung.', readTime: '8 Min.', date: 'April 2026', featured: true, type: 'artikel' as const, photo: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1200&q=80', slug: 'fadenlifting' },

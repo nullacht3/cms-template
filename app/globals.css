@@ -1,10 +1,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-::selection { background: rgba(74,127,165,0.2); }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
-::-webkit-scrollbar { width: 4px; }
+::selection { background: rgba(0,0,0,0.1); }
+
+::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(74,127,165,0.3); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 2px; }
+
+/* Post card image hover — applied via JS class toggle */
+.post-img { transition: transform 0.55s ease; }
 
 @keyframes shimmer {
   0% { background-position: 200% 0; }
@@ -13,6 +18,9 @@
 
 /* ── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 768px) {
+  .nav-desktop { display: none !important; }
+  .nav-mobile  { display: flex !important; }
+
   .hero-inner {
     padding: 0 20px 40px !important;
   }
@@ -60,44 +68,83 @@
   .featured-content {
     padding: 28px 24px !important;
   }
+  .elle-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .elle-grid-main {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Artikel-Inhalt auf Mobile */
+  .article-html-content h2 { font-size: 19px !important; margin-top: 36px !important; }
+  .article-html-content h3 { font-size: 16px !important; margin-top: 24px !important; }
+  .article-html-content blockquote { font-size: 16px !important; padding-left: 16px !important; }
+  .article-html-content p { font-size: 16px !important; line-height: 1.85 !important; }
+  .article-html-content li { font-size: 16px !important; }
+  .article-excerpt { font-size: 17px !important; }
+  .article-layout { grid-template-columns: 1fr !important; row-gap: 0 !important; column-gap: 0 !important; }
+
+  /* Overflow verhindern */
+  body { overflow-x: hidden; }
+  img, video, iframe, table { max-width: 100% !important; }
+
+  /* Admin – Sidebar ausblenden, Vollbreite */
+  .admin-sidebar { display: none !important; }
+  .admin-topbar-title { font-size: 14px !important; }
+  .admin-main { padding: 20px 16px !important; }
+
+  /* Artikel-Grid auf Mobile */
+  .article-layout { gap: 0 !important; }
+  .page-padding { padding-top: 72px !important; }
 }
 
 /* ── ARTICLE HTML CONTENT ───────────────────────── */
-.article-html-content p { margin-bottom: 24px; }
+.article-html-content { overflow-wrap: break-word; word-break: break-word; font-family: 'DM Sans', sans-serif; }
+.article-html-content p { margin-bottom: 26px; font-size: 17px; line-height: 1.9; }
 .article-html-content h2 {
-  font-family: 'Cormorant Garant', serif;
-  font-size: 26px;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
   margin-bottom: 16px;
-  margin-top: 40px;
-  letter-spacing: -0.01em;
+  margin-top: 52px;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 .article-html-content h3 {
-  font-family: 'Cormorant Garant', serif;
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 12px;
-  margin-top: 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  margin-top: 32px;
+  letter-spacing: -0.01em;
 }
 .article-html-content blockquote {
   border-left: 3px solid currentColor;
   padding-left: 24px;
-  margin: 8px 0 24px;
-  font-family: 'Cormorant Garant', serif;
+  margin: 32px 0;
+  font-family: 'DM Sans', sans-serif;
   font-style: italic;
   font-size: 18px;
-  line-height: 1.6;
+  line-height: 1.7;
   opacity: 0.85;
 }
 .article-html-content ul, .article-html-content ol {
   padding-left: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
-.article-html-content li { margin-bottom: 8px; line-height: 1.7; }
+.article-html-content li { margin-bottom: 10px; line-height: 1.8; font-size: 17px; }
 .article-html-content strong { font-weight: 600; }
 .article-html-content a { text-decoration: underline; opacity: 0.8; }
 .article-html-content img {
   width: 100%;
-  border-radius: 8px;
-  margin: 16px 0 24px;
+  margin: 16px 0 28px;
+}
+.article-html-content table {
+  font-size: 15px;
+}
+.article-html-content table td,
+.article-html-content table th {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
 }

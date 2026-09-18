@@ -1,41 +1,69 @@
 'use client'
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { useTheme } from '@/context/ThemeContext'
 
 export function NewsletterForm() {
   const { t } = useTheme()
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'exists'>('idle')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email) return
     setStatus('loading')
-    const supabase = createClient()
-    const { error } = await supabase.from('newsletter_subscribers').insert({ email })
-    setStatus(error ? 'error' : 'success')
+
+    const res = await fetch('/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+
+    if (res.status === 409) { setStatus('exists'); return }
+    setStatus(res.ok ? 'success' : 'error')
   }
 
   return (
-    <div style={{ background: t.accentLight, borderRadius: 12, padding: '32px 36px', marginTop: 60 }}>
+    <div style={{ background: t.surfaceHover, borderTop: `3px solid ${t.text}`, padding: '36px 0 32px', marginTop: 72 }}>
       <h3 style={{ fontFamily: "'Cormorant Garant', serif", fontSize: 22, fontWeight: 500, color: t.text, marginBottom: 8 }}>Newsletter</h3>
-      <p style={{ fontSize: 13, color: t.textMuted, marginBottom: 20, lineHeight: 1.6 }}>Neue Artikel, kuratierte Inhalte und Fachwissen — direkt in dein Postfach.</p>
+      <p style={{ fontSize: 13, color: t.textMuted, marginBottom: 20, lineHeight: 1.6 }}>
+        Neue Artikel, kuratierte Inhalte und Fachwissen — direkt in dein Postfach.
+      </p>
+
       {status === 'success' ? (
-        <p style={{ fontSize: 14, color: t.accent, fontWeight: 500 }}>✓ Danke! Du bist jetzt eingetragen.</p>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+          <span style={{ fontSize: 20, marginTop: 2 }}>📬</span>
+          <div>
+            <p style={{ fontSize: 14, color: t.text, fontWeight: 500, marginBottom: 4 }}>Fast geschafft!</p>
+            <p style={{ fontSize: 13, color: t.textMuted, lineHeight: 1.6 }}>
+              Wir haben eine Bestätigungs-E-Mail an <strong>{email}</strong> gesendet. Bitte klicken Sie auf den Link darin, um die Anmeldung abzuschließen.
+            </p>
+          </div>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 10 }}>
           <input
-            type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-            placeholder="deine@email.de" required
-            style={{ flex: 1, padding: '10px 14px', border: `1px solid ${t.border}`, borderRadius: 7, fontSize: 14, fontFamily: "'DM Sans', sans-serif", color: t.text, background: t.surface, outline: 'none' }}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="deine@email.de"
+            required
+            style={{ flex: 1, padding: '11px 16px', border: `1px solid ${status === 'error' ? '#c0392b' : t.border}`, borderRadius: 0, fontSize: 14, fontFamily: "'DM Sans', sans-serif", color: t.text, background: t.surface, outline: 'none' }}
           />
-          <button type="submit" disabled={status === 'loading'} style={{ background: t.accent, color: '#fff', border: 'none', padding: '10px 20px', borderRadius: 7, fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", opacity: status === 'loading' ? 0.7 : 1 }}>
+          <button
+            type="submit"
+            disabled={status === 'loading'}
+            style={{ background: t.text, color: '#ffffff', border: 'none', padding: '11px 28px', borderRadius: 0, fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", opacity: status === 'loading' ? 0.7 : 1, whiteSpace: 'nowrap' }}>
             {status === 'loading' ? '…' : 'Anmelden'}
           </button>
         </form>
       )}
-      {status === 'error' && <p style={{ fontSize: 12, color: '#c0392b', marginTop: 8 }}>Diese E-Mail ist bereits eingetragen oder ein Fehler ist aufgetreten.</p>}
+
+      {status === 'exists' && (
+        <p style={{ fontSize: 12, color: t.accent, marginTop: 8 }}>✓ Diese E-Mail ist bereits angemeldet.</p>
+      )}
+      {status === 'error' && (
+        <p style={{ fontSize: 12, color: '#c0392b', marginTop: 8 }}>Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.</p>
+      )}
     </div>
   )
 }

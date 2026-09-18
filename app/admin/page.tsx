@@ -32,6 +32,16 @@ export default function AdminDashboard() {
     load()
   }
 
+  async function toggleFeatured(id: string, current: boolean) {
+    const supabase = createClient()
+    // Erst alle anderen un-featuren, dann diesen togglen
+    if (!current) {
+      await supabase.from('articles').update({ is_featured: false }).neq('id', id)
+    }
+    await supabase.from('articles').update({ is_featured: !current }).eq('id', id)
+    load()
+  }
+
   async function deleteArticle(id: string, title: string) {
     if (!confirm(`Artikel löschen?\n"${title}"`)) return
     const supabase = createClient()
@@ -75,8 +85,8 @@ export default function AdminDashboard() {
         <p style={{ color: '#8aa0b8', fontSize: 14 }}>Laden…</p>
       ) : (
         <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 20px rgba(15,30,46,0.07)', overflow: 'hidden' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 150px 130px 130px', gap: 16, padding: '11px 24px', borderBottom: '1px solid #d8e0e8', background: '#f8fafc' }}>
-            {['Titel', 'Kategorie', 'Status', 'Aktionen'].map(h => (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 150px 44px 130px 130px', gap: 16, padding: '11px 24px', borderBottom: '1px solid #d8e0e8', background: '#f8fafc' }}>
+            {['Titel', 'Kategorie', '⭐', 'Status', 'Aktionen'].map(h => (
               <span key={h} style={{ ...label, color: '#8aa0b8' }}>{h}</span>
             ))}
           </div>
@@ -86,14 +96,20 @@ export default function AdminDashboard() {
           )}
 
           {articles.map((a, i) => (
-            <div key={a.id} style={{ display: 'grid', gridTemplateColumns: '1fr 150px 130px 130px', gap: 16, padding: '14px 24px', borderBottom: i < articles.length - 1 ? '1px solid #eef1f4' : 'none', alignItems: 'center' }}>
+            <div key={a.id} style={{ display: 'grid', gridTemplateColumns: '1fr 150px 44px 130px 130px', gap: 16, padding: '14px 24px', borderBottom: i < articles.length - 1 ? '1px solid #eef1f4' : 'none', alignItems: 'center' }}>
               <div>
                 <p style={{ fontSize: 14, color: '#0f1e2e', fontWeight: 500, marginBottom: 2, lineHeight: 1.3 }}>{a.title}</p>
                 <p style={{ fontSize: 11, color: '#8aa0b8' }}>
-                  /{a.slug}{a.is_featured ? ' · ⭐' : ''}{a.published_at ? ` · ${new Date(a.published_at).toLocaleDateString('de-DE')}` : ''}
+                  /{a.slug}{a.published_at ? ` · ${new Date(a.published_at).toLocaleDateString('de-DE')}` : ''}
                 </p>
               </div>
               <span style={{ fontSize: 12, color: '#4a6278' }}>{a.category || '—'}</span>
+              <button
+                onClick={() => toggleFeatured(a.id, a.is_featured)}
+                title={a.is_featured ? 'Featured entfernen' : 'Als Featured markieren'}
+                style={{ background: a.is_featured ? 'rgba(255,200,0,0.15)' : 'transparent', border: `1px solid ${a.is_featured ? '#f0c040' : '#d8e0e8'}`, borderRadius: 6, padding: '4px 8px', fontSize: 16, cursor: 'pointer', lineHeight: 1 }}>
+                {a.is_featured ? '⭐' : '☆'}
+              </button>
               <button onClick={() => togglePublished(a.id, a.published)}
                 style={{ background: a.published ? 'rgba(26,160,80,0.1)' : 'rgba(170,170,170,0.12)', color: a.published ? '#1a8a50' : '#8aa0b8', border: 'none', padding: '5px 12px', borderRadius: 20, fontSize: 11, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', letterSpacing: '0.04em' }}>
                 {a.published ? '✓ Veröffentlicht' : '○ Entwurf'}

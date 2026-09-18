@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   description: 'Fundiertes Fachwissen, kuratierte Listen und Interviews für alle, die Ästhetik wirklich verstehen wollen.',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de">

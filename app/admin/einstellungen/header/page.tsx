@@ -1,6 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getHeaderSettings, saveSetting, HEADER_DEFAULTS } from '@/lib/siteSettings'
+import { createClient } from '@/lib/supabase/client'
 import type { NavItem } from '@/lib/siteSettings'
 
 export default function HeaderSettings() {
@@ -10,6 +11,21 @@ export default function HeaderSettings() {
   const [navItems, setNavItems] = useState<NavItem[]>(HEADER_DEFAULTS.nav_items)
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [loading, setLoading] = useState(true)
+  const [uploading, setUploading] = useState(false)
+  const logoFileRef = useRef<HTMLInputElement>(null)
+
+  async function uploadLogo(file: File) {
+    setUploading(true)
+    const supabase = createClient()
+    const ext = file.name.split('.').pop()
+    const path = `logo/${Date.now()}.${ext}`
+    const { data, error } = await supabase.storage.from('images').upload(path, file, { contentType: file.type, upsert: true })
+    if (!error && data) {
+      const { data: urlData } = supabase.storage.from('images').getPublicUrl(data.path)
+      setLogoUrl(urlData.publicUrl)
+    }
+    setUploading(false)
+  }
 
   useEffect(() => {
     getHeaderSettings().then(s => {
@@ -79,13 +95,39 @@ export default function HeaderSettings() {
             </div>
           </div>
           <div style={{ marginTop: 20 }}>
-            <label style={label}>Logo-URL (Bild — leer lassen für Text-Logo)</label>
-            <input value={logoUrl} onChange={e => setLogoUrl(e.target.value)} placeholder="https://…/logo.svg" style={input} />
-            {logoUrl && (
-              <div style={{ marginTop: 12, padding: 16, background: '#f2f5f8', borderRadius: 8, display: 'inline-block' }}>
-                <img src={logoUrl} alt="Logo Vorschau" style={{ height: 40, objectFit: 'contain' }} />
+            <label style={label}>Logo-Bild (leer lassen für Text-Logo)</label>
+            <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+              {/* Vorschau */}
+              <div style={{ width: 120, height: 64, borderRadius: 8, border: '1px solid #d0dce8', background: '#f7fafd', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+                {logoUrl
+                  ? <img src={logoUrl} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', padding: 8 }} />
+                  : <span style={{ fontSize: 11, color: '#aab8c4' }}>Kein Logo</span>
+                }
               </div>
-            )}
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                  <button onClick={() => logoFileRef.current?.click()} disabled={uploading}
+                    style={{ padding: '9px 16px', background: '#1a5a8a', color: '#fff', border: 'none', borderRadius: 7, fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', opacity: uploading ? 0.7 : 1 }}>
+                    {uploading ? 'Lädt…' : '↑ Logo hochladen'}
+                  </button>
+                  {logoUrl && (
+                    <button onClick={() => setLogoUrl('')}
+                      style={{ padding: '9px 14px', background: '#f0f4f8', color: '#4a6278', border: '1px solid #d0dce8', borderRadius: 7, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
+                      Entfernen
+                    </button>
+                  )}
+                  <input ref={logoFileRef} type="file" accept="image/*,.svg" style={{ display: 'none' }}
+                    onChange={e => e.target.files?.[0] && uploadLogo(e.target.files[0])} />
+                </div>
+                <p style={{ fontSize: 11, color: '#8aa0b8', lineHeight: 1.5 }}>
+                  PNG, SVG oder JPG · Empfohlen: transparenter Hintergrund, mind. 200px breit
+                </p>
+                {/* Oder URL direkt eingeben */}
+                <input value={logoUrl} onChange={e => setLogoUrl(e.target.value)}
+                  placeholder="Oder URL direkt eingeben…"
+                  style={{ ...input, marginTop: 10, fontSize: 12, color: '#6b8499' }} />
+              </div>
+            </div>
           </div>
         </div>
 

@@ -3,14 +3,18 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Logo } from './Logo'
 import { useTheme } from '@/context/ThemeContext'
-import { getFooterSettings, FOOTER_DEFAULTS } from '@/lib/siteSettings'
-import type { FooterSettings } from '@/lib/siteSettings'
+import { getFooterSettings, getHeaderSettings, FOOTER_DEFAULTS, HEADER_DEFAULTS } from '@/lib/siteSettings'
+import type { FooterSettings, HeaderSettings } from '@/lib/siteSettings'
 
 export function Footer() {
   const { t } = useTheme()
   const [settings, setSettings] = useState<FooterSettings>(FOOTER_DEFAULTS)
+  const [header, setHeader] = useState<HeaderSettings>(HEADER_DEFAULTS)
 
-  useEffect(() => { getFooterSettings().then(setSettings) }, [])
+  useEffect(() => {
+    getFooterSettings().then(setSettings)
+    getHeaderSettings().then(setHeader)
+  }, [])
 
   return (
     <footer style={{ borderTop: `1px solid ${t.separator}` }}>
@@ -20,7 +24,10 @@ export function Footer() {
         )}
         <div className="footer-inner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <Logo t={t} size="small" />
+            {header.logo_url
+              ? <img src={header.logo_url} alt={header.site_name} style={{ height: 28, objectFit: 'contain' }} />
+              : <Logo t={t} size="small" />
+            }
           </Link>
           <p style={{ fontSize: 12, color: t.textLight }}>{settings.copyright}</p>
           <div style={{ display: 'flex', gap: 20 }}>

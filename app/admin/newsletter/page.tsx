@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase/client'
 type Subscriber = {
   id: string
   email: string
-  created_at: string
+  confirmed: boolean
+  subscribed_at: string
 }
 
 export default function NewsletterPage() {
@@ -20,7 +21,7 @@ export default function NewsletterPage() {
       const { data } = await supabase
         .from('newsletter_subscribers')
         .select('*')
-        .order('created_at', { ascending: false })
+        .order('subscribed_at', { ascending: false })
       setSubscribers(data || [])
       setLoading(false)
     }
@@ -52,7 +53,9 @@ export default function NewsletterPage() {
   // Wachstum: Abos im letzten Monat
   const lastMonth = new Date()
   lastMonth.setMonth(lastMonth.getMonth() - 1)
-  const newLastMonth = subscribers.filter(s => new Date(s.created_at) > lastMonth).length
+  const newLastMonth = subscribers.filter(s => new Date(s.subscribed_at) > lastMonth).length
+  const confirmed = subscribers.filter(s => s.confirmed).length
+  const pending = subscribers.filter(s => !s.confirmed).length
 
   return (
     <div>
@@ -74,13 +77,13 @@ export default function NewsletterPage() {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginBottom: 24 }}>
         {[
-          { label: 'Gesamt', value: subscribers.length, color: '#1a5a8a' },
-          { label: 'Letzter Monat', value: `+${newLastMonth}`, color: '#27ae60' },
-          { label: 'Letzte Anmeldung', value: subscribers[0] ? formatDate(subscribers[0].created_at) : '—', color: '#6b8499', small: true },
+          { label: 'Bestätigt', value: confirmed, color: '#1a8a50' },
+          { label: 'Ausstehend', value: pending, color: '#e67e22' },
+          { label: 'Letzter Monat', value: `+${newLastMonth}`, color: '#1a5a8a' },
         ].map(stat => (
           <div key={stat.label} style={{ background: '#fff', borderRadius: 8, border: '1px solid #d8e0e8', padding: '16px 20px' }}>
             <p style={{ fontSize: 11, color: '#8aa0b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{stat.label}</p>
-            <p style={{ fontSize: stat.small ? 15 : 24, fontWeight: 600, color: stat.color }}>{stat.value}</p>
+            <p style={{ fontSize: 24, fontWeight: 600, color: stat.color }}>{stat.value}</p>
           </div>
         ))}
       </div>
@@ -103,8 +106,9 @@ export default function NewsletterPage() {
       ) : (
         <div style={{ background: '#fff', borderRadius: 10, border: '1px solid #d8e0e8', overflow: 'hidden' }}>
           {/* Table Header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 160px 48px', gap: 0, borderBottom: '2px solid #e8eff5', padding: '10px 20px', background: '#f7fafd' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px 160px 48px', gap: 0, borderBottom: '2px solid #e8eff5', padding: '10px 20px', background: '#f7fafd' }}>
             <span style={{ fontSize: 11, fontWeight: 600, color: '#8aa0b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>E-Mail</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: '#8aa0b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Status</span>
             <span style={{ fontSize: 11, fontWeight: 600, color: '#8aa0b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Angemeldet am</span>
             <span />
           </div>
@@ -113,7 +117,7 @@ export default function NewsletterPage() {
             <p style={{ padding: '20px', color: '#8aa0b8', fontSize: 14 }}>Keine Treffer für „{search}"</p>
           ) : filtered.map((s, i) => (
             <div key={s.id} style={{
-              display: 'grid', gridTemplateColumns: '1fr 160px 48px', gap: 0,
+              display: 'grid', gridTemplateColumns: '1fr 100px 160px 48px', gap: 0,
               padding: '12px 20px', alignItems: 'center',
               borderBottom: i < filtered.length - 1 ? '1px solid #f0f4f8' : 'none',
               transition: 'background 0.1s',
@@ -122,7 +126,12 @@ export default function NewsletterPage() {
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
               <span style={{ fontSize: 14, color: '#1a2e3d', fontWeight: 400 }}>{s.email}</span>
-              <span style={{ fontSize: 13, color: '#6b8499' }}>{formatDate(s.created_at)}</span>
+              <span style={{ fontSize: 11, fontWeight: 500, padding: '3px 8px', borderRadius: 12, display: 'inline-block',
+                background: s.confirmed ? 'rgba(26,138,80,0.1)' : 'rgba(230,126,34,0.1)',
+                color: s.confirmed ? '#1a8a50' : '#e67e22' }}>
+                {s.confirmed ? '✓ Bestätigt' : '⏳ Ausstehend'}
+              </span>
+              <span style={{ fontSize: 13, color: '#6b8499' }}>{formatDate(s.subscribed_at)}</span>
               <button onClick={() => deleteSubscriber(s.id, s.email)}
                 style={{ background: 'none', border: 'none', color: '#c8d8e4', fontSize: 16, cursor: 'pointer', padding: 4, borderRadius: 4, transition: 'color 0.15s' }}
                 onMouseEnter={e => (e.currentTarget.style.color = '#c0392b')}

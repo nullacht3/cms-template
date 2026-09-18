@@ -36,7 +36,7 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
         {results.length > 0 && (
           <div style={{ maxHeight: 360, overflowY: 'auto' }}>
             {results.map((p) => (
-              <div key={p.id} onClick={() => { router.push(`/artikel/${p.slug}`); onClose() }} style={{ padding: '16px 20px', borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onMouseEnter={(e) => (e.currentTarget.style.background = t.accentLight)} onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
+              <div key={p.id} onClick={() => { router.push(`/${p.slug}`); onClose() }} style={{ padding: '16px 20px', borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onMouseEnter={(e) => (e.currentTarget.style.background = t.accentLight)} onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
                 <div>
                   <span style={{ background: t.tag.bg, color: t.tag.color, fontSize: 10, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '2px 8px', borderRadius: 4 }}>{p.tag}</span>
                   <p style={{ fontSize: 17, color: t.text, marginTop: 6, fontFamily: "'Cormorant Garant', serif" }}>{p.title}</p>

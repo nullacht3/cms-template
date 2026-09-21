@@ -6,7 +6,6 @@ const ADMIN_ONLY_PATHS = [
   '/admin/einstellungen',
   '/admin/benutzer',
   '/admin/nachrichten',
-  '/admin/newsletter',
 ]
 
 export async function middleware(request: NextRequest) {

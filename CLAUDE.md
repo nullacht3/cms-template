@@ -29,7 +29,7 @@ app/
   [slug]/page.tsx          ← Artikel-Detail (slug direkt auf Root: /polynukleotide-erfahrungen)
   kategorien/page.tsx      ← Kategorie-Übersicht mit Filter + Suche
   admin/                   ← CMS (Auth-geschützt via middleware.ts)
-  api/                     ← Newsletter subscribe/confirm, Media, Users
+  api/                     ← Media, Users
   layout.tsx               ← ThemeProvider, Google Fonts
 
 components/
@@ -166,4 +166,3 @@ SUPABASE_SERVICE_ROLE_KEY=       # → "service_role secret"
 - [ ] **Vercel Environment Variables** kontrollieren: alle drei `.env.local`-Werte müssen dort hinterlegt sein
 - [ ] **`media`-Tabelle im Schema dokumentieren**: fehlt in `001_schema.sql`
 - [ ] **Admin-Auth testen**: middleware.ts schützt `/admin` — prüfen ob Redirect auf `/admin/login` korrekt funktioniert
-- [ ] **Newsletter-Bestätigungs-E-Mail**: `/api/newsletter/confirm` vorhanden, aber E-Mail-Template in Supabase konfiguriert?

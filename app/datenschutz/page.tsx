@@ -37,28 +37,22 @@ export default function DatenschutzPage() {
           <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb der Website).</p>
         </Section>
 
-        <Section title="4. Newsletter">
-          <p style={{ marginBottom: 12 }}>Wenn Sie sich für unseren Newsletter anmelden, speichern wir Ihre E-Mail-Adresse bei <strong style={{ color: t.text, fontWeight: 500 }}>Supabase Inc.</strong> (970 Toa Payoh North, #07-04, Singapur 318992). Die Daten werden ausschließlich zum Versand des Newsletters verwendet.</p>
-          <p style={{ marginBottom: 12 }}>Sie können die Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie uns eine E-Mail an <a href="mailto:info@nullachtdrei.de" style={{ color: t.accent, textDecoration: 'none' }}>info@nullachtdrei.de</a> senden.</p>
-          <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).</p>
-        </Section>
-
-        <Section title="5. Externe Inhalte & Bilder">
+        <Section title="4. Externe Inhalte & Bilder">
           <p>Diese Website verwendet Bilder von <strong style={{ color: t.text, fontWeight: 500 }}>Unsplash</strong> (Unsplash Inc., 500 rue Notre-Dame Ouest, Montréal, QC, Kanada). Beim Laden dieser Bilder kann Ihre IP-Adresse an die Server von Unsplash übermittelt werden. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p>
         </Section>
 
-        <Section title="6. Schriftarten (Google Fonts)">
+        <Section title="5. Schriftarten (Google Fonts)">
           <p>Diese Website lädt Schriftarten von den Servern von Google (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland). Dabei wird Ihre IP-Adresse übermittelt. Google Fonts wird auf Basis von Art. 6 Abs. 1 lit. f DSGVO eingebunden (berechtigtes Interesse an einheitlicher Darstellung).</p>
         </Section>
 
-        <Section title="7. Webanalyse mit Google Analytics">
+        <Section title="6. Webanalyse mit Google Analytics">
           <p style={{ marginBottom: 12 }}>Sofern Sie eingewilligt haben, nutzen wir <strong style={{ color: t.text, fontWeight: 500 }}>Google Analytics 4</strong>, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics setzt Cookies und erfasst Informationen über die Nutzung dieser Website, etwa aufgerufene Seiten, Verweildauer, ungefähre Region, Gerät und Browser. IP-Adressen werden in Google Analytics 4 nicht gespeichert.</p>
           <p style={{ marginBottom: 12 }}>Die Daten können an Server der Google LLC in den USA übermittelt werden. Google LLC ist unter dem EU-US Data Privacy Framework zertifiziert, auf dessen Grundlage die Übermittlung erfolgt. Die Daten werden nach 14 Monaten gelöscht.</p>
           <p style={{ marginBottom: 12 }}>Google Analytics wird erst geladen, nachdem Sie im Cookie-Banner zugestimmt haben. Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG. Sie können Ihre Einwilligung jederzeit über den Link „Cookie-Einstellungen“ am Ende jeder Seite widerrufen.</p>
           <p>Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: t.accent, textDecoration: 'none' }}>policies.google.com/privacy</a></p>
         </Section>
 
-        <Section title="8. Ihre Rechte">
+        <Section title="7. Ihre Rechte">
           <p style={{ marginBottom: 12 }}>Sie haben gegenüber uns folgende Rechte hinsichtlich Ihrer personenbezogenen Daten:</p>
           <ul style={{ paddingLeft: 20, marginBottom: 12 }}>
             {[
@@ -76,11 +70,11 @@ export default function DatenschutzPage() {
           <p>Zur Ausübung Ihrer Rechte wenden Sie sich bitte an: <a href="mailto:info@nullachtdrei.de" style={{ color: t.accent, textDecoration: 'none' }}>info@nullachtdrei.de</a></p>
         </Section>
 
-        <Section title="9. Beschwerderecht">
+        <Section title="8. Beschwerderecht">
           <p>Sie haben das Recht, sich bei der zuständigen Aufsichtsbehörde zu beschweren. In Bayern ist dies das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach.</p>
         </Section>
 
-        <Section title="10. Aktualität dieser Erklärung">
+        <Section title="9. Aktualität dieser Erklärung">
           <p>Diese Datenschutzerklärung ist aktuell gültig und hat den Stand September 2026. Durch die Weiterentwicklung unserer Website kann eine Anpassung notwendig werden.</p>
         </Section>
       </div>

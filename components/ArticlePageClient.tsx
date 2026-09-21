@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
-import { NewsletterForm } from '@/components/NewsletterForm'
 import { useTheme } from '@/context/ThemeContext'
 import { getArticles } from '@/lib/getArticles'
 import { createClient } from '@/lib/supabase/client'
@@ -161,9 +160,6 @@ export function ArticlePageClient({ slug, initialPost, initialHtml }: { slug: st
               <ArticleBody t={t} type={p.type} />
             )}
 
-            <div style={{ marginTop: 64 }}>
-              <NewsletterForm />
-            </div>
           </article>
 
           {/* Sidebar */}

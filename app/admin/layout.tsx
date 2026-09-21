@@ -16,7 +16,6 @@ const NAV_SECTIONS = [
     title: 'Posteingang',
     items: [
       { href: '/admin/nachrichten', label: 'Kontaktanfragen', icon: '✉️', adminOnly: true },
-      { href: '/admin/newsletter', label: 'Newsletter', icon: '📧', adminOnly: true },
     ],
   },
   {

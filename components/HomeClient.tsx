@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { Nav } from '@/components/Nav'
 import { PostCard } from '@/components/PostCard'
 import { Footer } from '@/components/Footer'
-import { NewsletterForm } from '@/components/NewsletterForm'
 import { useTheme } from '@/context/ThemeContext'
 import type { Post } from '@/lib/types'
 import type { HomepageSettings } from '@/lib/siteSettings'
@@ -135,8 +134,6 @@ export function HomeClient({ posts, hero }: Props) {
               <CategoryGrid posts={section.posts} t={t} />
             </section>
           ))}
-
-          <NewsletterForm />
         </div>
       </div>
       <Footer />

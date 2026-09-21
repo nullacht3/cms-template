@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { HomeClient } from '@/components/HomeClient'
 import { HOMEPAGE_DEFAULTS, type HomepageSettings } from '@/lib/siteSettings'
-import { POSTS } from '@/lib/themes'
 import type { Post } from '@/lib/types'
 
 function toPost(a: Record<string, unknown>, index: number): Post {
@@ -36,17 +35,17 @@ export default async function HomePage() {
   const supabase = await createClient()
 
   // Artikel laden
-  let posts: Post[] = POSTS
+  let posts: Post[] = []
   try {
     const { data } = await supabase
       .from('articles')
       .select('id, title, slug, excerpt, cover_image, category, tags, published_at, read_time, is_featured')
       .eq('published', true)
       .order('published_at', { ascending: false })
-    if (data && data.length > 0) {
+    if (data) {
       posts = data.map((a, i) => toPost(a as Record<string, unknown>, i))
     }
-  } catch { /* Fallback zu POSTS */ }
+  } catch { /* keine Artikel */ }
 
   // Hero-Einstellungen laden
   let hero: HomepageSettings = HOMEPAGE_DEFAULTS

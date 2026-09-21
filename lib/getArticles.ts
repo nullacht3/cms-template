@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/client'
-import { POSTS } from '@/lib/themes'
 import type { Post } from '@/lib/types'
 
 // Maps a Supabase article row to the Post shape used throughout the app
@@ -40,9 +39,9 @@ export async function getArticles(): Promise<Post[]> {
       .eq('published', true)
       .order('published_at', { ascending: false })
 
-    if (error || !data || data.length === 0) return POSTS
+    if (error || !data) return []
     return data.map((a, i) => toPost(a as Record<string, unknown>, i))
   } catch {
-    return POSTS
+    return []
   }
 }

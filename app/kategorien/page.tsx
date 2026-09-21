@@ -3,7 +3,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
 import { useTheme } from '@/context/ThemeContext'
-import { POSTS, CATEGORY_DISPLAY, CATEGORY_SLUG_MAP, CATEGORY_ORDER } from '@/lib/themes'
+import { CATEGORY_DISPLAY, CATEGORY_SLUG_MAP, CATEGORY_ORDER } from '@/lib/themes'
 import { getArticles } from '@/lib/getArticles'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { Post } from '@/lib/types'
@@ -29,7 +29,7 @@ function KategorienInner() {
   const catSlug = searchParams.get('cat') || ''
 
   const [search, setSearch] = useState('')
-  const [posts, setPosts] = useState<Post[]>(POSTS)
+  const [posts, setPosts] = useState<Post[]>([])
 
   useEffect(() => { getArticles().then(setPosts) }, [])
 

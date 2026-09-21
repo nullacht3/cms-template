@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { cache } from 'react'
+import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { ArticlePageClient } from '@/components/ArticlePageClient'
 import { toPost } from '@/lib/getArticles'
@@ -56,19 +57,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ArtikelPage({ params }: Props) {
   const { slug } = await params
   const article = await getArticle(slug)
+  if (!article) notFound()
 
   return (
     <>
-      {article && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleJsonLd(article)).replace(/</g, '\\u003c') }}
-        />
-      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleJsonLd(article)).replace(/</g, '\\u003c') }}
+      />
       <ArticlePageClient
         slug={slug}
-        initialPost={article ? toPost(article, 0) : undefined}
-        initialHtml={article?.content || undefined}
+        initialPost={toPost(article, 0)}
+        initialHtml={article.content || undefined}
       />
     </>
   )

@@ -5,7 +5,6 @@ import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
 import { NewsletterForm } from '@/components/NewsletterForm'
 import { useTheme } from '@/context/ThemeContext'
-import { POSTS } from '@/lib/themes'
 import { getArticles } from '@/lib/getArticles'
 import { createClient } from '@/lib/supabase/client'
 import type { Theme, Post } from '@/lib/types'
@@ -82,10 +81,10 @@ function ArticleBody({ t, type }: { t: Theme; type: string }) {
   )
 }
 
-export function ArticlePageClient({ slug, initialPost, initialHtml }: { slug: string; initialPost?: Post; initialHtml?: string }) {
+export function ArticlePageClient({ slug, initialPost, initialHtml }: { slug: string; initialPost: Post; initialHtml?: string }) {
   const { t } = useTheme()
   const router = useRouter()
-  const [allPosts, setAllPosts] = useState<Post[]>(POSTS)
+  const [allPosts, setAllPosts] = useState<Post[]>([])
   const [htmlContent, setHtmlContent] = useState<string | null>(initialHtml ?? null)
 
   useEffect(() => { getArticles().then(setAllPosts) }, [])
@@ -103,7 +102,7 @@ export function ArticlePageClient({ slug, initialPost, initialHtml }: { slug: st
     loadContent()
   }, [slug, initialHtml])
 
-  const p = initialPost || allPosts.find((x) => x.slug === slug) || allPosts[0]
+  const p = initialPost
   const related = allPosts.filter((x) => x.slug !== p.slug).slice(0, 3)
 
   return (

@@ -2,11 +2,16 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTheme } from '@/context/ThemeContext'
-import { POSTS, CATEGORIES } from '@/lib/themes'
+import { CATEGORIES } from '@/lib/themes'
+import { getArticles } from '@/lib/getArticles'
+import type { Post } from '@/lib/types'
 
 export function SearchOverlay({ onClose }: { onClose: () => void }) {
   const { t } = useTheme()
   const [q, setQ] = useState('')
+  const [posts, setPosts] = useState<Post[]>([])
+
+  useEffect(() => { getArticles().then(setPosts) }, [])
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -17,7 +22,7 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
     return () => window.removeEventListener('keydown', fn)
   }, [onClose])
 
-  const results = q.length > 1 ? POSTS.filter((p) =>
+  const results = q.length > 1 ? posts.filter((p) =>
     p.title.toLowerCase().includes(q.toLowerCase()) ||
     p.category.toLowerCase().includes(q.toLowerCase())
   ) : []

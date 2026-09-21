@@ -25,7 +25,7 @@ export function Footer() {
         <div className="footer-inner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
             {header.logo_url
-              ? <img src={header.logo_url} alt={header.site_name} style={{ height: 28, objectFit: 'contain' }} />
+              ? <img src={header.logo_url} alt={header.site_name} style={{ height: 28, objectFit: 'contain', filter: 'brightness(0)' }} />
               : <Logo t={t} size="small" />
             }
           </Link>

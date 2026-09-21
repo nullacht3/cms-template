@@ -58,7 +58,7 @@ function NavInner() {
   }
 
   const logoEl = settings.logo_url
-    ? <img src={settings.logo_url} alt={settings.site_name} style={{ height: 36, objectFit: 'contain', display: 'block' }} />
+    ? <img src={settings.logo_url} alt={settings.site_name} style={{ height: 36, objectFit: 'contain', display: 'block', filter: transparent ? 'none' : 'brightness(0)', transition: 'filter 0.3s ease' }} />
     : <Logo t={transparent ? { ...t, text: '#f4f0ea' } : t} />
 
   return (

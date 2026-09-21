@@ -5,6 +5,7 @@ import { Logo } from './Logo'
 import { useTheme } from '@/context/ThemeContext'
 import { getFooterSettings, getHeaderSettings } from '@/lib/siteSettings'
 import { useSiteSettings } from '@/context/SiteSettingsContext'
+import { OPEN_CONSENT_EVENT } from './CookieConsent'
 import type { FooterSettings, HeaderSettings } from '@/lib/siteSettings'
 
 export function Footer() {
@@ -39,6 +40,10 @@ export function Footer() {
                 {label}
               </Link>
             ))}
+            <button onClick={() => window.dispatchEvent(new Event(OPEN_CONSENT_EVENT))}
+              style={{ fontSize: 12, color: t.textMuted, background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit' }}>
+              Cookie-Einstellungen
+            </button>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { SiteSettingsProvider } from '@/context/SiteSettingsContext'
 import { getSiteSettingsServer } from '@/lib/siteSettingsServer'
+import { CookieConsent } from '@/components/CookieConsent'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -26,7 +27,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <SiteSettingsProvider {...siteSettings}>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            {children}
+            <CookieConsent />
+          </ThemeProvider>
         </SiteSettingsProvider>
       </body>
     </html>

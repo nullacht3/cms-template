@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "der-aesthet",
-      "runtimeExecutable": "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
-      "runtimeArgs": ["/opt/homebrew/Cellar/node/25.9.0_2/lib/node_modules/npm/bin/npm-cli.js", "run", "dev", "--", "--port", "3002"],
+      "runtimeExecutable": "/usr/local/bin/npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "3002"],
       "port": 3002
     }
   ]

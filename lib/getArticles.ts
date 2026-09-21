@@ -3,7 +3,7 @@ import { POSTS } from '@/lib/themes'
 import type { Post } from '@/lib/types'
 
 // Maps a Supabase article row to the Post shape used throughout the app
-function toPost(a: Record<string, unknown>, index: number): Post {
+export function toPost(a: Record<string, unknown>, index: number): Post {
   const tag = (a.tags as string[])?.[0] || 'Artikel'
   const type: Post['type'] = ['Interview'].includes(tag)
     ? 'interview'

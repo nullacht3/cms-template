@@ -82,15 +82,16 @@ function ArticleBody({ t, type }: { t: Theme; type: string }) {
   )
 }
 
-export function ArticlePageClient({ slug }: { slug: string }) {
+export function ArticlePageClient({ slug, initialPost, initialHtml }: { slug: string; initialPost?: Post; initialHtml?: string }) {
   const { t } = useTheme()
   const router = useRouter()
   const [allPosts, setAllPosts] = useState<Post[]>(POSTS)
-  const [htmlContent, setHtmlContent] = useState<string | null>(null)
+  const [htmlContent, setHtmlContent] = useState<string | null>(initialHtml ?? null)
 
   useEffect(() => { getArticles().then(setAllPosts) }, [])
 
   useEffect(() => {
+    if (initialHtml) return
     async function loadContent() {
       try {
         const supabase = createClient()
@@ -100,10 +101,10 @@ export function ArticlePageClient({ slug }: { slug: string }) {
       } catch { /* fallback */ }
     }
     loadContent()
-  }, [slug])
+  }, [slug, initialHtml])
 
-  const p = allPosts.find((x) => x.slug === slug) || allPosts[0]
-  const related = allPosts.filter((x) => x.id !== p.id).slice(0, 3)
+  const p = initialPost || allPosts.find((x) => x.slug === slug) || allPosts[0]
+  const related = allPosts.filter((x) => x.slug !== p.slug).slice(0, 3)
 
   return (
     <>

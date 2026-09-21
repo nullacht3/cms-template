@@ -4,10 +4,9 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { Logo } from './Logo'
 import { SearchOverlay } from './SearchOverlay'
 import { useTheme } from '@/context/ThemeContext'
-import { getHeaderSettings, HEADER_DEFAULTS } from '@/lib/siteSettings'
+import { getHeaderSettings } from '@/lib/siteSettings'
 import type { NavItem, HeaderSettings } from '@/lib/siteSettings'
-
-const SETTINGS_CACHE_KEY = 'da_header_v1'
+import { useSiteSettings } from '@/context/SiteSettingsContext'
 
 function NavInner() {
   const [searchOpen, setSearchOpen] = useState(false)
@@ -19,26 +18,10 @@ function NavInner() {
   const [scrolled, setScrolled] = useState(false)
   const isHome = pathname === '/'
 
-  // Seed from localStorage so logo is correct on first render → no flash
-  const [settings, setSettings] = useState<HeaderSettings>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const cached = localStorage.getItem(SETTINGS_CACHE_KEY)
-        if (cached) {
-          const parsed = JSON.parse(cached)
-          return { ...HEADER_DEFAULTS, ...parsed, nav_items: HEADER_DEFAULTS.nav_items }
-        }
-      } catch {}
-    }
-    return HEADER_DEFAULTS
-  })
+  // Server-loaded settings → correct logo in the first render, no flash
+  const [settings, setSettings] = useState<HeaderSettings>(useSiteSettings().header)
 
-  useEffect(() => {
-    getHeaderSettings().then(s => {
-      setSettings(s)
-      try { localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(s)) } catch {}
-    })
-  }, [])
+  useEffect(() => { getHeaderSettings().then(setSettings) }, [])
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60)

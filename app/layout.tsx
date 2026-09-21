@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { ThemeProvider } from '@/context/ThemeContext'
+import { SiteSettingsProvider } from '@/context/SiteSettingsContext'
+import { getSiteSettingsServer } from '@/lib/siteSettingsServer'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -12,7 +14,9 @@ export const viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const siteSettings = await getSiteSettingsServer()
+
   return (
     <html lang="de">
       <head>
@@ -21,7 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <SiteSettingsProvider {...siteSettings}>
+          <ThemeProvider>{children}</ThemeProvider>
+        </SiteSettingsProvider>
       </body>
     </html>
   )

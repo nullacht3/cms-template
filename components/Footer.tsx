@@ -3,13 +3,15 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Logo } from './Logo'
 import { useTheme } from '@/context/ThemeContext'
-import { getFooterSettings, getHeaderSettings, FOOTER_DEFAULTS, HEADER_DEFAULTS } from '@/lib/siteSettings'
+import { getFooterSettings, getHeaderSettings } from '@/lib/siteSettings'
+import { useSiteSettings } from '@/context/SiteSettingsContext'
 import type { FooterSettings, HeaderSettings } from '@/lib/siteSettings'
 
 export function Footer() {
   const { t } = useTheme()
-  const [settings, setSettings] = useState<FooterSettings>(FOOTER_DEFAULTS)
-  const [header, setHeader] = useState<HeaderSettings>(HEADER_DEFAULTS)
+  const initial = useSiteSettings()
+  const [settings, setSettings] = useState<FooterSettings>(initial.footer)
+  const [header, setHeader] = useState<HeaderSettings>(initial.header)
 
   useEffect(() => {
     getFooterSettings().then(setSettings)

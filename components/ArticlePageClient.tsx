@@ -12,6 +12,18 @@ function TagLabel({ label, t }: { label: string; t: Theme }) {
   return <span style={{ background: t.tag.bg, color: t.tag.color, fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 0, fontFamily: "'DM Sans', sans-serif" }}>{label}</span>
 }
 
+// Versieht <td> mit data-label aus dem Tabellenkopf, damit Tabellen auf Mobile als Karten gestapelt werden können
+function labelTableCells(html: string) {
+  return html.replace(/<table[\s\S]*?<\/table>/g, (table) => {
+    const labels = [...table.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)].map((m) => m[1].replace(/<[^>]+>/g, '').replace(/"/g, '&quot;').trim())
+    if (!labels.length) return table
+    return table.replace(/<tr[^>]*>[\s\S]*?<\/tr>/g, (row) => {
+      let i = 0
+      return row.replace(/<td(?![^>]*data-label)/g, () => `<td data-label="${labels[i++] ?? ''}"`)
+    })
+  })
+}
+
 function PostImage({ src, t }: { src: string; t: Theme }) {
   return (
     <div style={{ width: '100%', paddingBottom: '52%', position: 'relative', overflow: 'hidden', background: t.surfaceHover, marginBottom: 48 }}>
@@ -155,7 +167,7 @@ export function ArticlePageClient({ slug, initialPost, initialHtml }: { slug: st
 
             {htmlContent ? (
               <div className="article-html-content" style={{ fontSize: 17, lineHeight: 1.9, color: t.text }}
-                dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                dangerouslySetInnerHTML={{ __html: labelTableCells(htmlContent) }} />
             ) : (
               <ArticleBody t={t} type={p.type} />
             )}

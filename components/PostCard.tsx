@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import type { Theme, Post } from '@/lib/types'
 
 function Chip({ label, t, small }: { label: string; t: Theme; small?: boolean }) {
@@ -19,19 +19,18 @@ type Size = 'large' | 'medium' | 'small' | 'featured'
 
 export function PostCard({ post, t, featured = false, size = 'medium' }: { post: Post; t: Theme; featured?: boolean; size?: Size }) {
   const [hovered, setHovered] = useState(false)
-  const router = useRouter()
   const slug = post.slug || `artikel-${post.id}`
-  const go = () => router.push(`/${slug}`)
+  const href = `/${slug}`
 
   // ── FEATURED (2-col hero) ──────────────────────────────────────────
   if (featured) {
     return (
-      <div
+      <Link
+        href={href}
         className="featured-card"
-        onClick={go}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, background: t.surface, overflow: 'hidden', boxShadow: hovered ? t.shadowHover : t.shadow, cursor: 'pointer', transition: 'box-shadow 0.3s', border: `1px solid ${t.border}` }}
+        style={{ textDecoration: 'none', color: 'inherit', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, background: t.surface, overflow: 'hidden', boxShadow: hovered ? t.shadowHover : t.shadow, cursor: 'pointer', transition: 'box-shadow 0.3s', border: `1px solid ${t.border}` }}
       >
         <div style={{ overflow: 'hidden' }}>
           <img src={post.photo} alt="" style={{ width: '100%', height: '100%', minHeight: 340, objectFit: 'cover', display: 'block', transition: 'transform 0.55s ease', transform: hovered ? 'scale(1.04)' : 'scale(1)' }} />
@@ -50,18 +49,18 @@ export function PostCard({ post, t, featured = false, size = 'medium' }: { post:
             <span style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 600, color: t.text, fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.05em' }}>Lesen →</span>
           </div>
         </div>
-      </div>
+      </Link>
     )
   }
 
   // ── LARGE (title above image, info bar below) ──────────────────────
   if (size === 'large') {
     return (
-      <div
-        onClick={go}
+      <Link
+        href={href}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        style={{ cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}
+        style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}
       >
         {/* Meta + Title — above the image */}
         <div style={{ marginBottom: 14 }}>
@@ -94,18 +93,18 @@ export function PostCard({ post, t, featured = false, size = 'medium' }: { post:
           <span style={{ fontSize: 11, color: t.borderLight }}>·</span>
           <span style={{ fontSize: 11, color: t.textLight, fontFamily: "'DM Sans', sans-serif" }}>{post.readTime} Lesezeit</span>
         </div>
-      </div>
+      </Link>
     )
   }
 
   // ── SMALL (horizontal row — stacked in right column) ───────────────
   if (size === 'small') {
     return (
-      <div
-        onClick={go}
+      <Link
+        href={href}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        style={{ display: 'flex', gap: 16, padding: '16px 0', borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer' }}
+        style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 16, padding: '16px 0', borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer' }}
       >
         <div style={{ flexShrink: 0, overflow: 'hidden' }}>
           <img src={post.photo} alt="" style={{ width: 88, height: 68, objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease', transform: hovered ? 'scale(1.06)' : 'scale(1)' }} />
@@ -115,17 +114,17 @@ export function PostCard({ post, t, featured = false, size = 'medium' }: { post:
           <h4 style={{ fontFamily: "'Cormorant Garant', serif", fontSize: 15, fontWeight: 600, lineHeight: 1.35, color: t.text, marginTop: 7, letterSpacing: '-0.01em', opacity: hovered ? 0.7 : 1, transition: 'opacity 0.15s' }}>{post.title}</h4>
           <span style={{ fontSize: 11, color: t.textLight, marginTop: 5, display: 'block', fontFamily: "'DM Sans', sans-serif" }}>{post.date}</span>
         </div>
-      </div>
+      </Link>
     )
   }
 
   // ── MEDIUM (standard grid card) ────────────────────────────────────
   return (
-    <div
-      onClick={go}
+    <Link
+      href={href}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ background: t.surface, overflow: 'hidden', border: `1px solid ${t.border}`, cursor: 'pointer', transition: 'box-shadow 0.25s', boxShadow: hovered ? t.shadowHover : 'none', display: 'flex', flexDirection: 'column' }}
+      style={{ textDecoration: 'none', color: 'inherit', background: t.surface, overflow: 'hidden', border: `1px solid ${t.border}`, cursor: 'pointer', transition: 'box-shadow 0.25s', boxShadow: hovered ? t.shadowHover : 'none', display: 'flex', flexDirection: 'column' }}
     >
       <div style={{ overflow: 'hidden' }}>
         <img src={post.photo} loading="lazy" alt="" style={{ width: '100%', aspectRatio: '3/2', objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease', transform: hovered ? 'scale(1.04)' : 'scale(1)' }} />
@@ -142,6 +141,6 @@ export function PostCard({ post, t, featured = false, size = 'medium' }: { post:
           <span style={{ fontSize: 11, color: t.textLight, fontFamily: "'DM Sans', sans-serif" }}>{post.readTime}</span>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

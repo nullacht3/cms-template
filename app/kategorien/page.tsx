@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
@@ -101,10 +102,10 @@ function KategorienInner() {
 
         <div style={{ display: 'flex', flexDirection: 'column' as const }}>
           {filtered.map((p) => (
-            <div
+            <Link
               key={p.id}
-              onClick={() => router.push(`/${p.slug}`)}
-              style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 20, padding: '20px 0', borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer', transition: 'background 0.12s', borderRadius: 4 }}
+              href={`/${p.slug}`}
+              style={{ textDecoration: 'none', color: 'inherit', display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 20, padding: '20px 0', borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer', transition: 'background 0.12s', borderRadius: 4 }}
               onMouseEnter={(e) => (e.currentTarget.style.background = t.accentLight)}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
@@ -130,7 +131,7 @@ function KategorienInner() {
                 <p style={{ fontSize: 11, color: t.textLight, marginBottom: 4 }}>{p.date}</p>
                 <p style={{ fontSize: 11, color: t.textLight }}>{p.readTime}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

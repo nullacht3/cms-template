@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Nav } from '@/components/Nav'
@@ -180,11 +181,11 @@ export function ArticlePageClient({ slug, initialPost, initialHtml }: { slug: st
               <div style={{ background: t.surface, border: `1px solid ${t.border}`, padding: '20px 20px', marginBottom: 16 }}>
                 <p style={{ fontSize: 10, color: t.textLight, letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginBottom: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>Ähnliche Artikel</p>
                 {related.map((r) => (
-                  <div key={r.id} onClick={() => router.push(`/${r.slug}`)}
-                    style={{ paddingBottom: 14, marginBottom: 14, borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer' }}>
+                  <Link key={r.id} href={`/${r.slug}`}
+                    style={{ display: 'block', textDecoration: 'none', paddingBottom: 14, marginBottom: 14, borderBottom: `1px solid ${t.borderLight}`, cursor: 'pointer' }}>
                     <TagLabel label={r.tag} t={t} />
                     <p style={{ fontSize: 14, color: t.text, lineHeight: 1.45, marginTop: 8, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>{r.title}</p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

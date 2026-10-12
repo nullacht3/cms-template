@@ -81,7 +81,14 @@ export function ArticleEditor({ id, initial }: Props) {
       : await supabase.from('articles').update(payload).eq('id', id)
 
     if (error) { setStatus('error'); setMsg(error.message) }
-    else { setStatus('saved'); setMsg('Gespeichert ✓'); if (isNew) router.push('/admin') }
+    else {
+      // Sitemap aktualisieren + Suchmaschinen benachrichtigen (Fehler hier sind nicht kritisch)
+      fetch('/api/admin/artikel-veroeffentlicht', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+        body: JSON.stringify({ slug: form.slug }),
+      }).catch(() => {})
+      setStatus('saved'); setMsg('Gespeichert ✓'); if (isNew) router.push('/admin')
+    }
   }
 
   const input: React.CSSProperties = { width: '100%', padding: '10px 14px', border: '1px solid #ccd5de', borderRadius: 8, fontSize: 14, color: '#0f1e2e', outline: 'none', fontFamily: "'DM Sans', sans-serif", background: '#fff' }
